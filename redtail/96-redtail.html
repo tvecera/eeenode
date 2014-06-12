@@ -14,34 +14,35 @@
   limitations under the License.
 -->
 
-<script type="text/x-red" data-template-name="tail2">
+<script type="text/x-red" data-template-name="redtail">
     <div class="form-row node-input-filename">
          <label for="node-input-filename"><i class="icon-file"></i> Filename</label>
          <input type="text" id="node-input-filename" placeholder="Filename">
     </div>
     <div class="form-row">
+        <label for="node-input-splitstr"><i class="icon-tag"></i> Split string</label>
+        <input type="text" id="node-input-splitstr" placeholder="Split String">
         <label>&nbsp;</label>
         <input type="checkbox" id="node-input-split" placeholder="Name" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-input-split" style="width: 70%;">Split lines if we see \n ?</label>
+        <label for="node-input-split" style="width: 70%;">Split lines</label>
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
-    <div class="form-tips">WON'T work on Windows.</div>
 </script>
 
-<script type="text/x-red" data-help-name="tail2">
-	<p>Tails (watches for things to be added) to the configured file. (Linux/Mac ONLY)</p>
-	<p>This won't work on Windows filesystems (as it relies on the tail -f command) so we will probably have to hide it in future.</p>
+<script type="text/x-red" data-help-name="redtail">
+	<p>RedTail - Continue to track the end of a growing specific file. Node depends on node-tail - https://github.com/lucagrulla/node-tail.</p>
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('tail2',{
+    RED.nodes.registerType('redtail',{
         category: 'storage-input',
         defaults: {
             name: {value:""},
             split: {value:false},
+            splitstr: {value:"\n\r"}
             filename: {value:"",required:true}
         },
         color:"BurlyWood",

@@ -15,36 +15,34 @@
  **/
 
 module.exports = function(RED) {
-    //var fs = require("fs");
-    //var spawn = require('child_process').spawn;
     Tail = require('tail').Tail;
-    
-    function TailNode2(n) {
+
+    function RedTailNode(n) {
         RED.nodes.createNode(this,n);
-    
+
         this.filename = n.filename;
         this.split = n.split;
+        this.splitstr = n.splitstr;
         var node = this;
-    
-        var err = "";
-	if (node.split) {
-	    tail = new Tail(this.filename, "\n\r");
-	} else {
-	    tail = new Tail(this.filename);
-	}
-	
-	tail.on("line", function(data) {
-	    console.log(data);
-	});
 
-	tail.on("error", function(error) {
-	    console.log('ERROR: ', error);
-	});
-	
+        if (node.split && node.splitstr) {
+	         tail = new Tail(this.filename, node.splitstr);
+	      } else {
+	         tail = new Tail(this.filename);
+	      }
+
+	      tail.on("line", function(data) {
+	         console.log(data);
+	      });
+
+	      tail.on("error", function(error) {
+	         console.log('ERROR: ', error);
+	      });
+
         this.on("close", function() {
-	    tail.unwatch();
+	         tail.unwatch();
         });
     }
-    
-    RED.nodes.registerType("tail2",TailNode2);
+
+    RED.nodes.registerType("redtail",RedTailNode);
 }
