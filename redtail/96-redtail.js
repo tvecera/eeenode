@@ -28,29 +28,29 @@ module.exports = function(RED) {
 
         tail = new Tail(node.filename);
 
-	      tail.on("line", function(data) {
+        tail.on("line", function(data) {
           if (node.split && node.splitstr) {
             var strings = data.split(node.splitstr);
             for (s in strings) {
               if (strings[s] != "") {
                 msg.payload = strings[s];
-                node.log(msg);
+                node.log(msg.payload);
                 node.send(msg);
               }
             }
           } else {
             msg.payload = data;
-            node.log(msg);
+            node.log(msg.payload);
             node.send(msg);
           }
-	      });
+        });
 
-	      tail.on("error", function(error) {
-	         node.log(error);
-	      });
+        tail.on("error", function(error) {
+          node.log(error);
+        });
 
         this.on("close", function() {
-	         tail.unwatch();
+          tail.unwatch();
         });
     }
 

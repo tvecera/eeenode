@@ -47,7 +47,7 @@ cpufv=2
 # conservative - Dynamically switch between CPU(s) available if at 75% load
 # powersave - Run the cpu at the minimum frequency
 # userspace - Run the cpu at user specified frequencies
-scalinggovernor="performance"
+scalinggovernor="conservative"
 # Writeback Time
 # Increasing the VM dirty writeback time can help to aggregate I/O together - reducing disk writes, and decreasing power usage:
 writeback=1500
@@ -65,7 +65,9 @@ echo 0 > /sys/class/rfkill/rfkill1/state
 # Remove internal 950 GMA Graphics - PCI 0000:00:02.0
 echo 1 > /sys/bus/pci/drivers/i915/0000\:00\:02.0/remove
 # Setup FAN SPEED - TODO
+service fancontrol stop
 echo 50 > /sys/class/hwmon/hwmon2/pwm1
+service fancontrol start
 
 # Disable NMI wathcdog.
 # The NMI watchdog is a hardware debugging feature. On some systems it can generate a lot of interrupts.
