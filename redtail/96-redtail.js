@@ -24,19 +24,29 @@ module.exports = function(RED) {
         this.split = n.split;
         this.splitstr = n.splitstr;
         var node = this;
+        var msg = {topic:node.filename};
 
-        if (node.split && node.splitstr) {
-	         tail = new Tail(this.filename, node.splitstr);
-	      } else {
-	         tail = new Tail(this.filename);
-	      }
+        tail = new Tail(node.filename);
 
 	      tail.on("line", function(data) {
-	         console.log(data);
+          if (node.split && node.splitstr) {
+            var strings = data.split(node.splitstr);
+            for (s in strings) {
+              if (strings[s] != "") {
+                msg.payload = strings[s];
+                node.log(msg);
+                node.send(msg);
+              }
+            }
+          } else {
+            msg.payload = data;
+            node.log(msg);
+            node.send(msg);
+          }
 	      });
 
 	      tail.on("error", function(error) {
-	         console.log('ERROR: ', error);
+	         node.log(error);
 	      });
 
         this.on("close", function() {
